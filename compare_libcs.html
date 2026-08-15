@@ -15,6 +15,8 @@ td.half { background-color: #ffff80; }
 td.bad { background-color: #ff9090; }
 td.na { background-color: #f0f0f0; color: #999; }
 td.unknown { background-color: #f0f0f0; color: #999; font-style: italic; }
+tr.strike th, tr.strike td { text-decoration: line-through; }
+tr.strike th[title] { cursor: help; }
 p.note { font-size: 80%; color: #666; margin-top: 2em; }
 h2 { margin-top: 2em; }
 h3 { margin-top: 1.5em; }
@@ -104,10 +106,10 @@ Values marked <span class=unknown>?</span> are untested/unavailable.
 <tr><th>Self-exec (static linked)<td class=good>451.0µs<td class=good>583.0µs<td class=bad>887.0µs<td class=unknown>?<td class=good>543.0µs<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>Self-exec (dynamic linked)<td class=good>0.561ms<td class=bad>2.173ms<td class=half>1.122ms<td class=unknown>?<td class=good>0.331ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr class=section><th>ABI and versioning comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
-<tr><th>Stable ABI<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=strike><th title="Not measured - ABI stability needs a second libc version to compare against; only the original-document versions are built (musl 1.1.5, uclibc 0.9.33.2, dietlibc 0.32, glibc 2.19) until the report matches the original">Stable ABI<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>LSB-compatible ABI<td class=half>incomplete<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Backwards compatibility<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Forwards compatibility<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=strike><th title="Not measured - needs a newer libc to run binaries built against an older one; only the original-document versions are built until the report matches the original">Backwards compatibility<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=strike><th title="Not measured - needs an older libc to run binaries built against a newer one; only the original-document versions are built until the report matches the original">Forwards compatibility<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>Atomic upgrades<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>Symbol versioning<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr class=section><th>Algorithms comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
@@ -142,22 +144,22 @@ Values marked <span class=unknown>?</span> are untested/unavailable.
 <tr><th>i386<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>x86_64<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>ARM<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Aarch64 (64-bit)<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Aarch64 (64-bit)<td class=bad title="musl 1.1.5 configure rejects aarch64; port added in 1.1.7 (Mar 2015)">no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>MIPS<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>PowerPC<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>RISC-V (64-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr class="section"><th colspan="9">Target architectures comparison (exotic)</th></tr>
-<tr><th>x86_64 x32 ABI (ILP32)<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>SuperH<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Microblaze<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Sparc<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Alpha<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>S/390 (32-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>S/390x (64-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>RISC-V (64-bit)<td class=bad title="musl 1.1.5 configure rejects riscv; port added in 1.2.0">no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Target architectures comparison (exotic)<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>x86_64 x32 ABI (ILP32)<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>SuperH<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Microblaze<td class=good>yes<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Sparc<td class=bad title="musl ships no sparc port (then or now)">no<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Alpha<td class=bad title="musl ships no alpha port (then or now)">no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>S/390 (32-bit)<td class=bad title="musl ships no 32-bit s390 port (then or now)">no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>S/390x (64-bit)<td class=bad title="musl 1.1.5 configure rejects s390x; port added in 1.1.16 (Dec 2016)">no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>OpenRISC 1000 (or1k)<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr><th>Motorola 680x0 (m68k)<td class=bad>no<td class=bad>no<td class=good>yes<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Motorola 680x0 (m68k)<td class=bad title="musl 1.1.5 configure rejects m68k; port added in 1.1.18 (Oct 2017)">no<td class=good>yes<td class=good>yes<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>MMU-less microcontrollers<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
-<tr class="section"><th colspan="9">Target architectures comparison (embedded)</th></tr>
+<tr class=section><th>Target architectures comparison (embedded)<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
 <tr><th>AVR ATtiny<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>ESP32<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
 <tr><th>PIC 8-bit<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
@@ -355,6 +357,12 @@ no upstream port so testing is meaningless). Running the binary (qemu)
 is out of scope. Mainstream architectures (i386, ARM, AArch64, MIPS,
 PowerPC, RISC-V) come first; exotic ones only where the libc claims a
 port; AVR ATtiny, ESP32, and PIC 8-bit apply to newlib/picolibc only.
+The original marks musl aarch64, S/390x, and m68k "yes", but those ports
+landed in musl 1.1.7, 1.1.16, and 1.1.18 respectively — after the pinned
+1.1.5 — so here they are "no" with the reason on the cell. Each was
+verified by running the real build: musl 1.1.5's configure rejects these
+targets ("unknown or unsupported target"). The same run recorded musl's
+other unlisted targets (sparc, alpha, 32-bit s390, riscv) as "no".
 Results accumulate in <tt>results/&lt;libc&gt;_arch.csv</tt>, one line
 per architecture.</li>
 </ul>
@@ -398,7 +406,9 @@ library.</p>
   - BSD. Small, configurable libc for deeply embedded systems (ARM Cortex-M etc.).</li>
 <li><b>Original comparison</b>: <a href="https://www.etalabs.net/compare_libcs.html">etalabs.net/compare_libcs.html</a>
   - by Rich Felker (musl author)</li>
-<li><b>Source</b>: <a href="https://github.com/PepperDev/libc-bench">github.com/PepperDev/libc-bench</a>
+ <li><b>LSB</b>: <a href="https://refspecs.linuxfoundation.org/lsb.shtml">refspecs.linuxfoundation.org/lsb.shtml</a>
+   - Linux Standard Base specifications; the LSB-compatible ABI row is graded against them</li>
+ <li><b>Source</b>: <a href="https://github.com/PepperDev/libc-bench">github.com/PepperDev/libc-bench</a>
   - this report is generated from source by libc-bench</li>
 <li><b>Results</b>: <a href="http://pepperdev.github.io/compare_libcs.html">pepperdev.github.io/compare_libcs.html</a>
   - pre-run results of libc-bench</li>
