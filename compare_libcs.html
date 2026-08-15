@@ -1,0 +1,408 @@
+<html><head>
+<title>Comparison of C/POSIX standard library implementations for Linux</title>
+<style>
+h1 { text-align: center; }
+table { border-width: 0; margin: 0 auto; font-size: 85%; }
+col { width: 10em; }
+col.first { width: auto; }
+th { text-align: center; font-weight: bold; padding: 2px 8px; }
+tr > th:first-child { text-align: left; }
+td { text-align: center; padding: 2px 8px; }
+tr > td:first-child { text-align: left; font-weight: normal; }
+tr.section th { font-weight: bold; background-color: #b0a0ff; }
+td.good { background-color: #a0ffa0; }
+td.half { background-color: #ffff80; }
+td.bad { background-color: #ff9090; }
+td.na { background-color: #f0f0f0; color: #999; }
+td.unknown { background-color: #f0f0f0; color: #999; font-style: italic; }
+p.note { font-size: 80%; color: #666; margin-top: 2em; }
+h2 { margin-top: 2em; }
+h3 { margin-top: 1.5em; }
+</style>
+</head><body>
+<h1>Comparison of C/POSIX standard library implementations for Linux</h1>
+
+<p>A project of <a href="https://github.com/PepperDev/libc-bench">libc-bench</a>
+(results: <a href="http://pepperdev.github.io/compare_libcs.html">pepperdev.github.io/compare_libcs.html</a>).
+
+<p>This table compares standard library implementations available for Linux,
+with a focus on feature-richness, performance, bloat, and correctness.
+Values marked <span class=unknown>?</span> are untested/unavailable.
+<div align=center><table>
+<col class=first><col><col><col><col><col><col><col><col>
+<tr class="section bloat"><th>Bloat comparison (storage)<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Complete .a set<td class=good title="size=504k">504k<td class=bad title="size=3.1M">3174k<td class=good title="size=478k">478k<td class=unknown>?<td class=good title="size=219k">219k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Complete .so set<td class=good title="size=546k">546k<td class=bad title="size=10.4M">10704k<td class=good title="size=486k">486k<td class=unknown>?<td class=good title="size=272k">272k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Smallest static C program<td class=good title="size=2.0k maxrss=12k pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=9 majflt=0 utime=0us stime=0us wall=360us fsize=12k">2.0k<td class=bad title="size=778k maxrss=0 pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=33 majflt=0 utime=307us stime=0us wall=596us fsize=780k">778k<td class=good title="size=3.6k maxrss=0 pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=6 majflt=0 utime=0us stime=0us wall=232us fsize=13k">3.6k<td class=unknown>?<td class=good title="size=707B maxrss=8k pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=8 majflt=0 utime=0us stime=0us wall=284us fsize=12k">0.6k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Static hello (using printf)<td class=good title="size=14k maxrss=12k pdirty=0 pclean=0 sdirty=0 sclean=0 vss=40k minflt=10 majflt=0 utime=0us stime=0us wall=311us fsize=21k">14k<td class=bad title="size=778k maxrss=4.0k pdirty=0 pclean=0 sdirty=0 sclean=0 vss=592k minflt=35 majflt=0 utime=0us stime=0us wall=1ms fsize=780k">778k<td class=good title="size=23k maxrss=0 pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=9 majflt=0 utime=0us stime=0us wall=622us fsize=21k">23k<td class=unknown>?<td class=good title="size=6k maxrss=0 pdirty=0 pclean=0 sdirty=0 sclean=0 vss=0 minflt=9 majflt=0 utime=0us stime=0us wall=530us fsize=16k">6k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Configurable featureset<td class=half>minimal<td class=half>minimal<td class=good>yes<td class=unknown>?<td class=half>minimal<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class="section bloat"><th>Bloat comparison (memory)<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Dynamic overhead (min. dirty)<td class=good title="maxrss=420k pdirty=28k pclean=384k sdirty=0 sclean=4.0k vss=744k minflt=25 majflt=0 utime=2.83s stime=0us wall=2.99s">28k<td class=bad title="maxrss=844k pdirty=76k pclean=764k sdirty=0 sclean=4.0k vss=2.0M minflt=53 majflt=0 utime=2.92s stime=0us wall=3.15s">76k<td class=good title="maxrss=260k pdirty=40k pclean=220k sdirty=0 sclean=0 vss=492k minflt=25 majflt=0 utime=2.73s stime=779us wall=2.89s">40k<td class=unknown>?<td class=half title="maxrss=160k pdirty=48k pclean=112k sdirty=0 sclean=0 vss=412k minflt=26 majflt=0 utime=2.93s stime=0us wall=3.14s">48k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Static overhead (min. dirty)<td class=good title="maxrss=20k pdirty=8k pclean=12k sdirty=0 sclean=0 vss=184k minflt=9 majflt=0 utime=2.86s stime=0us wall=3.02s">8k<td class=bad title="maxrss=700k pdirty=36k pclean=660k sdirty=0 sclean=4.0k vss=1096k minflt=33 majflt=0 utime=2.85s stime=0us wall=3.04s">36k<td class=good title="maxrss=20k pdirty=8k pclean=8k sdirty=0 sclean=0 vss=184k minflt=6 majflt=0 utime=2.83s stime=903us wall=2.97s">8k<td class=unknown>?<td class=good title="maxrss=16k pdirty=8k pclean=8k sdirty=0 sclean=0 vss=184k minflt=8 majflt=0 utime=2.79s stime=0us wall=2.97s">8k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Static stdio overhead (min. dirty)<td class=good title="maxrss=32k pdirty=8k pclean=16k sdirty=0 sclean=8k vss=192k minflt=10 majflt=0 utime=2.95s stime=0us wall=3.12s">8k<td class=bad title="maxrss=752k pdirty=40k pclean=708k sdirty=0 sclean=4.0k vss=1100k minflt=35 majflt=0 utime=2.88s stime=0us wall=3.08s">40k<td class=half title="maxrss=40k pdirty=20k pclean=12k sdirty=0 sclean=8k vss=200k minflt=10 majflt=0 utime=2.86s stime=0us wall=3.00s">20k<td class=unknown>?<td class=good title="maxrss=28k pdirty=12k pclean=16k sdirty=0 sclean=0 vss=188k minflt=10 majflt=0 utime=2.83s stime=0us wall=3.03s">12k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: hello (stdio)<td class=good title="maxrss=72k pdirty=16k pclean=44k sdirty=0 sclean=12k vss=224k minflt=15 majflt=0 utime=94ms stime=0us wall=101ms">72k<td class=bad title="maxrss=1076k pdirty=52k pclean=1016k sdirty=0 sclean=4.0k vss=1456k minflt=45 majflt=0 utime=96ms stime=980us wall=100ms">1076k<td class=good title="maxrss=144k pdirty=32k pclean=104k sdirty=8k sclean=8k vss=320k minflt=14 majflt=0 utime=99ms stime=0us wall=102ms">144k<td class=unknown>?<td class=good title="maxrss=52k pdirty=20k pclean=32k sdirty=0 sclean=0 vss=228k minflt=13 majflt=0 utime=96ms stime=944us wall=101ms">52k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: hello (write)<td class=good title="maxrss=64k pdirty=16k pclean=44k sdirty=4.0k sclean=12k vss=224k minflt=13 majflt=0 utime=97ms stime=0us wall=103ms">64k<td class=bad title="maxrss=1068k pdirty=48k pclean=1016k sdirty=0 sclean=4.0k vss=1460k minflt=43 majflt=0 utime=84ms stime=2ms wall=102ms">1068k<td class=good title="maxrss=144k pdirty=32k pclean=104k sdirty=12k sclean=8k vss=316k minflt=14 majflt=0 utime=91ms stime=0us wall=103ms">144k<td class=unknown>?<td class=good title="maxrss=48k pdirty=12k pclean=32k sdirty=0 sclean=0 vss=224k minflt=10 majflt=0 utime=86ms stime=988us wall=101ms">48k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: threads sequential<td class=good title="maxrss=72k pdirty=16k pclean=44k sdirty=4.0k sclean=12k vss=312k minflt=213 majflt=0 utime=91ms stime=6ms wall=110ms">72k<td class=bad title="maxrss=1116k pdirty=60k pclean=1052k sdirty=0 sclean=4.0k vss=9.4M minflt=46 majflt=0 utime=94ms stime=6ms wall=114ms">1116k<td class=good title="maxrss=156k pdirty=48k pclean=100k sdirty=4.0k sclean=8k vss=356k minflt=216 majflt=0 utime=96ms stime=12ms wall=119ms">156k<td class=unknown>?<td class=good title="maxrss=128k pdirty=28k pclean=32k sdirty=8k sclean=20k vss=256k minflt=212 majflt=0 utime=115ms stime=42ms wall=4.55s">128k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: threads batched<td class=good title="maxrss=856k pdirty=260k pclean=44k sdirty=4.0k sclean=36k vss=5.5M minflt=214 majflt=0 utime=88ms stime=8ms wall=110ms">0.8M<td class=bad title="maxrss=2.6M pdirty=796k pclean=1052k sdirty=0 sclean=4.0k vss=721.7M minflt=458 majflt=0 utime=79ms stime=15ms wall=116ms">2.6M<td class=good title="maxrss=952k pdirty=76k pclean=100k sdirty=0 sclean=8k vss=452k minflt=218 majflt=0 utime=92ms stime=10ms wall=112ms">0.9M<td class=unknown>?<td class=good title="maxrss=856k pdirty=824k pclean=32k sdirty=0 sclean=0 vss=3.3M minflt=213 majflt=0 utime=95ms stime=15ms wall=128ms">0.8M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: stack small<td class=good title="maxrss=132k pdirty=16k pclean=44k sdirty=4.0k sclean=12k vss=224k minflt=31 majflt=0 utime=87ms stime=0us wall=102ms">132k<td class=bad title="maxrss=1132k pdirty=76k pclean=1052k sdirty=0 sclean=4.0k vss=1.5M minflt=62 majflt=0 utime=83ms stime=0us wall=101ms">1132k<td class=good title="maxrss=216k pdirty=104k pclean=100k sdirty=12k sclean=8k vss=392k minflt=33 majflt=0 utime=89ms stime=1ms wall=100ms">216k<td class=unknown>?<td class=good title="maxrss=120k pdirty=88k pclean=32k sdirty=0 sclean=0 vss=352k minflt=29 majflt=0 utime=90ms stime=235us wall=108ms">120k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: stack big<td class=good title="maxrss=588k pdirty=16k pclean=44k sdirty=0 sclean=12k vss=220k minflt=145 majflt=0 utime=86ms stime=0us wall=102ms">0.5M<td class=bad title="maxrss=1.5M pdirty=76k pclean=1052k sdirty=0 sclean=4.0k vss=2.4M minflt=175 majflt=0 utime=87ms stime=667us wall=102ms">1.5M<td class=good title="maxrss=668k pdirty=556k pclean=100k sdirty=4.0k sclean=8k vss=844k minflt=146 majflt=0 utime=91ms stime=293us wall=102ms">0.6M<td class=unknown>?<td class=good title="maxrss=572k pdirty=540k pclean=32k sdirty=8k sclean=0 vss=1248k minflt=142 majflt=0 utime=92ms stime=358us wall=109ms">0.5M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: stack small, multi-thread<td class=good title="maxrss=936k pdirty=8k pclean=44k sdirty=0 sclean=12k vss=224k minflt=285 majflt=0 utime=88ms stime=954us wall=102ms">0.9M<td class=half title="maxrss=1.5M pdirty=444k pclean=1052k sdirty=20k sclean=4.0k vss=3.4M minflt=334 majflt=0 utime=87ms stime=990us wall=104ms">1.5M<td class=good title="maxrss=1052k pdirty=412k pclean=100k sdirty=0 sclean=8k vss=696k minflt=288 majflt=0 utime=91ms stime=0us wall=105ms">1.0M<td class=unknown>?<td class=good title="maxrss=1144k pdirty=1112k pclean=32k sdirty=8k sclean=0 vss=2.2M minflt=285 majflt=0 utime=89ms stime=3ms wall=110ms">1.1M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: stack big, multi-thread<td class=bad title="maxrss=6.5M pdirty=5.0M pclean=44k sdirty=0 sclean=12k vss=16.3M minflt=2093 majflt=0 utime=86ms stime=8ms wall=109ms">6.5M<td class=good title="maxrss=2.1M pdirty=716k pclean=1052k sdirty=0 sclean=4.0k vss=17.4M minflt=2140 majflt=0 utime=84ms stime=4ms wall=107ms">2.1M<td class=bad title="maxrss=6.6M pdirty=6.2M pclean=100k sdirty=4.0k sclean=8k vss=6.5M minflt=2096 majflt=0 utime=97ms stime=2ms wall=111ms">6.6M<td class=unknown>?<td class=bad title="maxrss=8.1M pdirty=8.1M pclean=32k sdirty=0 sclean=0 vss=16.2M minflt=2092 majflt=0 utime=93ms stime=3ms wall=111ms">8.1M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: tiny allocs<td class=good title="maxrss=1476k pdirty=2.5M pclean=44k sdirty=4.0k sclean=12k vss=2.7M minflt=366 majflt=0 utime=93ms stime=0us wall=106ms">1.4M<td class=bad title="maxrss=2.1M pdirty=1140k pclean=1016k sdirty=0 sclean=4.0k vss=2.3M minflt=316 majflt=0 utime=88ms stime=2ms wall=106ms">2.1M<td class=good title="maxrss=1232k pdirty=1120k pclean=104k sdirty=4.0k sclean=36k vss=1284k minflt=286 majflt=0 utime=89ms stime=0us wall=102ms">1.2M<td class=unknown>?<td class=good title="maxrss=1456k pdirty=1424k pclean=32k sdirty=0 sclean=20k vss=1508k minflt=363 majflt=0 utime=94ms stime=7ms wall=111ms">1.4M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: big allocs<td class=good title="maxrss=15.7M pdirty=24.4M pclean=44k sdirty=0 sclean=12k vss=24.6M minflt=4035 majflt=0 utime=87ms stime=9ms wall=111ms">15.7M<td class=good title="maxrss=16.7M pdirty=26.3M pclean=1016k sdirty=0 sclean=4.0k vss=27.5M minflt=4053 majflt=0 utime=87ms stime=9ms wall=127ms">16.7M<td class=good title="maxrss=15.8M pdirty=15.6M pclean=104k sdirty=4.0k sclean=8k vss=15.9M minflt=4023 majflt=0 utime=87ms stime=11ms wall=121ms">15.8M<td class=unknown>?<td class=half title="maxrss=23.4M pdirty=23.4M pclean=32k sdirty=0 sclean=0 vss=23.6M minflt=6014 majflt=0 utime=96ms stime=12ms wall=136ms">23.4M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: growing allocs<td class=good title="maxrss=8.1M pdirty=8.1M pclean=44k sdirty=4.0k sclean=12k vss=8.3M minflt=2093 majflt=0 utime=90ms stime=3ms wall=106ms">8.1M<td class=half title="maxrss=9.1M pdirty=8.1M pclean=1016k sdirty=20k sclean=4.0k vss=9.5M minflt=2123 majflt=0 utime=82ms stime=5ms wall=106ms">9.1M<td class=good title="maxrss=8.2M pdirty=8.1M pclean=104k sdirty=0 sclean=8k vss=8.4M minflt=2094 majflt=0 utime=86ms stime=4ms wall=106ms">8.2M<td class=unknown>?<td class=good title="maxrss=8.1M pdirty=8.1M pclean=32k sdirty=0 sclean=0 vss=8.3M minflt=2091 majflt=0 utime=95ms stime=4ms wall=114ms">8.1M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: fragmented<td class=good title="maxrss=10.5M pdirty=21.0M pclean=44k sdirty=4.0k sclean=12k vss=21.2M minflt=2707 majflt=0 utime=93ms stime=5ms wall=125ms">10.5M<td class=good title="maxrss=11.5M pdirty=25.2M pclean=1016k sdirty=0 sclean=4.0k vss=26.4M minflt=2723 majflt=0 utime=84ms stime=5ms wall=108ms">11.5M<td class=good title="maxrss=10.6M pdirty=10.5M pclean=104k sdirty=12k sclean=8k vss=10.7M minflt=2694 majflt=0 utime=93ms stime=6ms wall=112ms">10.6M<td class=unknown>?<td class=half title="maxrss=15.6M pdirty=15.6M pclean=32k sdirty=0 sclean=0 vss=15.8M minflt=6017 majflt=0 utime=85ms stime=25ms wall=135ms">15.6M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: around mmap threshold<td class=good title="maxrss=328k pdirty=144k pclean=44k sdirty=4.0k sclean=12k vss=680k minflt=823 majflt=0 utime=90ms stime=3ms wall=105ms">328k<td class=bad title="maxrss=1324k pdirty=304k pclean=1016k sdirty=0 sclean=4.0k vss=1.6M minflt=172 majflt=0 utime=81ms stime=976us wall=101ms">1324k<td class=good title="maxrss=532k pdirty=420k pclean=104k sdirty=4.0k sclean=8k vss=704k minflt=566 majflt=0 utime=91ms stime=2ms wall=103ms">532k<td class=unknown>?<td class=good title="maxrss=268k pdirty=144k pclean=32k sdirty=0 sclean=0 vss=356k minflt=963 majflt=0 utime=80ms stime=978us wall=105ms">268k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc bubble<td class=good title="maxrss=7.0M pdirty=22.5M pclean=44k sdirty=0 sclean=12k vss=28.3M minflt=1797 majflt=0 utime=85ms stime=6ms wall=108ms">7.0M<td class=half title="maxrss=7.5M pdirty=16.3M pclean=1016k sdirty=20k sclean=4.0k vss=21.1M minflt=1713 majflt=0 utime=84ms stime=4ms wall=106ms">7.5M<td class=good title="maxrss=6.6M pdirty=6.5M pclean=104k sdirty=0 sclean=8k vss=8.1M minflt=1686 majflt=0 utime=86ms stime=3ms wall=105ms">6.6M<td class=unknown>?<td class=half title="maxrss=7.8M pdirty=7.8M pclean=32k sdirty=0 sclean=0 vss=13.2M minflt=4016 majflt=0 utime=70ms stime=27ms wall=152ms">7.8M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc bubble aligned<td class=half title="maxrss=8.2M pdirty=19.0M pclean=44k sdirty=4.0k sclean=12k vss=19.2M minflt=2107 majflt=0 utime=89ms stime=7ms wall=110ms">8.2M<td class=half title="maxrss=7.5M pdirty=6.5M pclean=1016k sdirty=0 sclean=4.0k vss=9.1M minflt=1714 majflt=0 utime=88ms stime=6ms wall=108ms">7.5M<td class=good title="maxrss=6.6M pdirty=6.5M pclean=104k sdirty=12k sclean=8k vss=8.1M minflt=1684 majflt=0 utime=91ms stime=4ms wall=105ms">6.6M<td class=unknown>?<td class=half title="maxrss=7.8M pdirty=7.8M pclean=32k sdirty=0 sclean=0 vss=13.2M minflt=4015 majflt=0 utime=63ms stime=30ms wall=133ms">7.8M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc tiny, multi-thread<td class=good title="maxrss=1320k pdirty=1264k pclean=44k sdirty=0 sclean=12k vss=1472k minflt=375 majflt=0 utime=91ms stime=0us wall=106ms">1.2M<td class=bad title="maxrss=2.2M pdirty=1204k pclean=1052k sdirty=0 sclean=4.0k vss=386.4M minflt=340 majflt=0 utime=86ms stime=3ms wall=103ms">2.2M<td class=good title="maxrss=1180k pdirty=1016k pclean=100k sdirty=12k sclean=8k vss=1300k minflt=298 majflt=0 utime=93ms stime=1ms wall=105ms">1.1M<td class=unknown>?<td class=good title="maxrss=1500k pdirty=1468k pclean=32k sdirty=8k sclean=0 vss=2.4M minflt=374 majflt=0 utime=91ms stime=3ms wall=139ms">1.4M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc big, multi-thread<td class=good title="maxrss=16.8M pdirty=17.1M pclean=44k sdirty=4.0k sclean=12k vss=18.4M minflt=4308 majflt=0 utime=91ms stime=13ms wall=117ms">16.8M<td class=good title="maxrss=16.8M pdirty=15.8M pclean=1052k sdirty=20k sclean=4.0k vss=514.4M minflt=4076 majflt=0 utime=80ms stime=19ms wall=119ms">16.8M<td class=good title="maxrss=15.7M pdirty=15.6M pclean=100k sdirty=4.0k sclean=36k vss=15.9M minflt=4038 majflt=0 utime=89ms stime=20ms wall=121ms">15.7M<td class=unknown>?<td class=half title="maxrss=23.5M pdirty=23.4M pclean=32k sdirty=0 sclean=0 vss=24.5M minflt=6020 majflt=0 utime=96ms stime=25ms wall=149ms">23.5M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc growing, multi-thread<td class=good title="maxrss=8.2M pdirty=8.1M pclean=44k sdirty=0 sclean=12k vss=8.6M minflt=2101 majflt=0 utime=90ms stime=4ms wall=109ms">8.2M<td class=half title="maxrss=9.2M pdirty=8.2M pclean=1052k sdirty=20k sclean=4.0k vss=393.0M minflt=2140 majflt=0 utime=81ms stime=5ms wall=107ms">9.2M<td class=good title="maxrss=8.2M pdirty=8.1M pclean=100k sdirty=0 sclean=8k vss=8.5M minflt=2105 majflt=0 utime=92ms stime=2ms wall=109ms">8.2M<td class=unknown>?<td class=good title="maxrss=8.2M pdirty=8.1M pclean=32k sdirty=0 sclean=0 vss=8.8M minflt=2100 majflt=0 utime=97ms stime=5ms wall=118ms">8.2M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc fragmented, multi-thread<td class=good title="maxrss=9.0M pdirty=9.0M pclean=44k sdirty=4.0k sclean=48k vss=9.2M minflt=2329 majflt=0 utime=87ms stime=14ms wall=116ms">9.0M<td class=good title="maxrss=11.0M pdirty=10.0M pclean=1052k sdirty=20k sclean=4.0k vss=322.4M minflt=2607 majflt=0 utime=82ms stime=7ms wall=111ms">11.0M<td class=good title="maxrss=9.1M pdirty=9.0M pclean=100k sdirty=12k sclean=8k vss=9.3M minflt=2348 majflt=0 utime=95ms stime=13ms wall=130ms">9.1M<td class=unknown>?<td class=half title="maxrss=15.6M pdirty=15.6M pclean=32k sdirty=0 sclean=0 vss=16.8M minflt=6012 majflt=0 utime=93ms stime=54ms wall=182ms">15.6M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc threshold, multi-thread<td class=good title="maxrss=1.5M pdirty=1044k pclean=44k sdirty=0 sclean=12k vss=2.4M minflt=5836 majflt=0 utime=94ms stime=9ms wall=127ms">1.5M<td class=half title="maxrss=2.3M pdirty=1152k pclean=1052k sdirty=20k sclean=4.0k vss=258.4M minflt=2400 majflt=0 utime=86ms stime=5ms wall=108ms">2.3M<td class=half title="maxrss=1.9M pdirty=1060k pclean=100k sdirty=4.0k sclean=8k vss=1464k minflt=4318 majflt=0 utime=89ms stime=14ms wall=116ms">1.9M<td class=unknown>?<td class=good title="maxrss=1.6M pdirty=1108k pclean=32k sdirty=0 sclean=0 vss=2.5M minflt=7644 majflt=0 utime=115ms stime=13ms wall=145ms">1.6M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc bubble, multi-thread<td class=good title="maxrss=7.1M pdirty=27.3M pclean=44k sdirty=0 sclean=12k vss=33.7M minflt=1847 majflt=0 utime=85ms stime=10ms wall=112ms">7.1M<td class=half title="maxrss=7.8M pdirty=6.7M pclean=1052k sdirty=20k sclean=4.0k vss=578.6M minflt=1765 majflt=0 utime=83ms stime=6ms wall=124ms">7.8M<td class=good title="maxrss=6.7M pdirty=6.6M pclean=100k sdirty=4.0k sclean=8k vss=8.2M minflt=1727 majflt=0 utime=91ms stime=10ms wall=113ms">6.7M<td class=unknown>?<td class=half title="maxrss=7.8M pdirty=7.8M pclean=32k sdirty=8k sclean=20k vss=13.9M minflt=4020 majflt=0 utime=82ms stime=54ms wall=226ms">7.8M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: alloc bubble aligned, multi-thread<td class=half title="maxrss=7.5M pdirty=29.6M pclean=44k sdirty=4.0k sclean=12k vss=33.4M minflt=1936 majflt=0 utime=84ms stime=8ms wall=108ms">7.5M<td class=half title="maxrss=7.5M pdirty=6.9M pclean=1052k sdirty=0 sclean=4.0k vss=453.3M minflt=1707 majflt=0 utime=83ms stime=10ms wall=110ms">7.5M<td class=good title="maxrss=6.5M pdirty=6.4M pclean=100k sdirty=0 sclean=8k vss=8.1M minflt=1678 majflt=0 utime=87ms stime=14ms wall=111ms">6.5M<td class=unknown>?<td class=half title="maxrss=7.8M pdirty=7.8M pclean=32k sdirty=0 sclean=0 vss=14.0M minflt=4020 majflt=0 utime=70ms stime=59ms wall=199ms">7.8M<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: libm tables<td class=good title="maxrss=72k pdirty=16k pclean=44k sdirty=4.0k sclean=12k vss=224k minflt=14 majflt=0 utime=87ms stime=0us wall=102ms">72k<td class=bad title="maxrss=1116k pdirty=48k pclean=1064k sdirty=0 sclean=4.0k vss=1460k minflt=44 majflt=0 utime=84ms stime=0us wall=101ms">1116k<td class=good title="maxrss=140k pdirty=28k pclean=104k sdirty=0 sclean=8k vss=316k minflt=13 majflt=0 utime=86ms stime=0us wall=101ms">140k<td class=unknown>?<td class=good title="maxrss=44k pdirty=12k pclean=32k sdirty=0 sclean=0 vss=224k minflt=10 majflt=0 utime=85ms stime=2ms wall=101ms">44k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Peak RSS: many open files<td class=good title="maxrss=320k pdirty=264k pclean=44k sdirty=0 sclean=12k vss=472k minflt=77 majflt=0 utime=87ms stime=981us wall=102ms">320k<td class=bad title="maxrss=1.9M pdirty=964k pclean=1052k sdirty=20k sclean=4.0k vss=2.2M minflt=272 majflt=0 utime=89ms stime=3ms wall=107ms">2020k<td class=half title="maxrss=972k pdirty=860k pclean=104k sdirty=12k sclean=8k vss=1144k minflt=221 majflt=0 utime=89ms stime=2ms wall=104ms">972k<td class=unknown>?<td class=half title="maxrss=872k pdirty=840k pclean=32k sdirty=8k sclean=0 vss=1052k minflt=217 majflt=0 utime=87ms stime=3ms wall=104ms">872k<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Allocator metadata overhead (per alloc)<td class=bad title="size=15B">15B<td class=good title="size=9B">9B<td class=bad title="size=17B">17B<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Behavior on resource exhaustion<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Thread-local storage<td class=good>reports failure<td class=good>reports failure<td class=good>reports failure<td class=unknown>?<td class=good>reports failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>TLS via dlopen<td class=good>reports failure<td class=bad>aborts<td class=bad>aborts<td class=unknown>?<td class=good>reports failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>SIGEV_THREAD timers<td class=good>no failure<td class=half>lost overruns<td class=bad>n/a<td class=unknown>?<td class=bad>n/a<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>pthread_cancel<td class=good>no failure<td class=bad>aborts<td class=good>no failure<td class=unknown>?<td class=good>no failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>regcomp and regexec<td class=good>reports failure<td class=good>reports failure<td class=good>reports failure<td class=unknown>?<td class=good>reports failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>fnmatch<td class=good>no failure<td class=good>no failure<td class=good>no failure<td class=unknown>?<td class=good>no failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>printf family<td class=good>no failure<td class=good>no failure<td class=good>no failure<td class=unknown>?<td class=good>no failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>strtol family<td class=good>no failure<td class=good>no failure<td class=good>no failure<td class=unknown>?<td class=good>no failure<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class="section perf"><th>Performance comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Tiny allocation & free, sequential<td class=good>0.950ms<td class=good>0.776ms<td class=good>0.860ms<td class=unknown>?<td class=bad>3.991ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Tiny allocation & free, scattered<td class=good>0.878ms<td class=good>0.946ms<td class=good>0.683ms<td class=unknown>?<td class=bad>3.752ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Big allocation & free, sequential<td class=good>0.008<td class=good>0.005<td class=bad>0.010<td class=unknown>?<td class=bad>0.012<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Big allocation & free, scattered<td class=good>0.007<td class=half>0.009<td class=half>0.010<td class=unknown>?<td class=half>0.010<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Allocation contention, local<td class=good>0.018<td class=good>0.006<td class=half>0.033<td class=unknown>?<td class=bad>0.124<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Allocation contention, shared<td class=good>0.023<td class=good>0.022<td class=good>0.037<td class=unknown>?<td class=bad>0.125<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Allocation contention, ncpu threads<td class=half>0.085<td class=good>0.005<td class=good>0.022<td class=unknown>?<td class=bad>1.180<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Malloc sparse<td class=half>0.037<td class=good>0.018<td class=half>0.037<td class=unknown>?<td class=bad>0.063<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Malloc bubble<td class=good>0.026<td class=good>0.017<td class=good>0.023<td class=unknown>?<td class=bad>0.060<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Zero-fill (memset)<td class=good>0.003<td class=good>0.001<td class=good>0.005<td class=unknown>?<td class=bad>0.050<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>String length (strlen)<td class=bad>0.004<td class=good>0.001<td class=bad>0.005<td class=unknown>?<td class=bad>0.005<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Byte search (strchr)<td class=good>0.007<td class=good>0.002<td class=good>0.009<td class=unknown>?<td class=bad>0.045<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Substring (strstr)<td class=good>0.011<td class=good>0.010<td class=good>0.016<td class=unknown>?<td class=bad>0.034<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Thread creation/joining<td class=half>0.089<td class=good>0.057<td class=bad>0.131<td class=unknown>?<td class=bad>timeout<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Thread creation/joining batched<td class=good>0.064<td class=good>0.086<td class=good>0.126<td class=unknown>?<td class=bad>5.492<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Thread creation, no join<td class=good>0.062<td class=good>0.059<td class=good>0.075<td class=unknown>?<td class=bad>0.123<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Mutex lock/unlock<td class=good>0.022<td class=good>0.026<td class=good>0.018<td class=unknown>?<td class=bad>0.304<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>UTF-8 decode buffered<td class=bad>10.936ms<td class=bad>12.262ms<td class=good>0.003ms<td class=unknown>?<td class=good>0.006ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>UTF-8 decode byte-by-byte<td class=bad>22.778ms<td class=bad>60.611ms<td class=good>0.002ms<td class=unknown>?<td class=good>0.004ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Math sin/cos<td class=good>0.021<td class=bad>0.083<td class=good>0.032<td class=unknown>?<td class=good>0.039<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Math exp/log<td class=good>0.015<td class=half>0.025<td class=good>0.016<td class=unknown>?<td class=half>0.020<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Math tan<td class=good>0.024<td class=bad>8.422<td class=good>0.021<td class=unknown>?<td class=good>0.037<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Stdio putc/getc<td class=good>0.037<td class=good>0.057<td class=good>0.264<td class=unknown>?<td class=bad>2.986<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Stdio putc/getc unlocked<td class=good>0.033<td class=good>0.029<td class=good>0.035<td class=unknown>?<td class=bad>0.058<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Regex compile<td class=bad>0.009<td class=good>0.003<td class=half>0.006<td class=unknown>?<td class=good>0.003<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Regex search (a{25}b)<td class=good>0.037<td class=good>0.028<td class=good>0.036<td class=unknown>?<td class=bad>0.052<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Self-exec (static linked)<td class=good>451.0µs<td class=good>583.0µs<td class=bad>887.0µs<td class=unknown>?<td class=good>543.0µs<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Self-exec (dynamic linked)<td class=good>0.561ms<td class=bad>2.173ms<td class=half>1.122ms<td class=unknown>?<td class=good>0.331ms<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>ABI and versioning comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Stable ABI<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>LSB-compatible ABI<td class=half>incomplete<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Backwards compatibility<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Forwards compatibility<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Atomic upgrades<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Symbol versioning<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Algorithms comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Substring search (strstr)<td class=good>twoway<td class=good>twoway<td class=bad>naive<td class=unknown>?<td class=bad>naive<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Regular expressions<td class=good>dfa<td class=good>dfa<td class=good>dfa<td class=unknown>?<td class=bad>backtracking<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Sorting (qsort)<td class=good>smoothsort<td class=good>introsort<td class=half>shellsort<td class=unknown>?<td class=bad>naive quicksort<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Allocator (malloc)<td class=good>musl-native<td class=good>ptmalloc<td class=good>dlmalloc<td class=unknown>?<td class=bad>diet-native<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Features comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Conformant printf<td class=good>yes<td class=good>yes<td class=half>partial<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Exact floating point printing<td class=good>yes<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>C99 math library<td class=good>yes<td class=half>partial<td class=bad>no<td class=unknown>?<td class=half>partial<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>C11 threads API<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>C11 thread-local storage<td class=good>yes<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>GCC libstdc++ compatibility<td class=good>yes<td class=good>yes<td class=bad>broken<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>POSIX threads<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>POSIX process scheduling<td class=bad>stub<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>POSIX thread priority scheduling<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>POSIX localedef<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Wide character interfaces<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=half>minimal<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Legacy 8-bit codepages<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Legacy CJK encodings<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>UTF-8 multibyte<td class=good>working<td class=good>working<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Iconv character conversions<td class=half>most<td class=good>full<td class=bad>no<td class=unknown>?<td class=half>limited<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Iconv transliteration extension<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Openwall-style TCB shadow<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Sun RPC, NIS<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Zoneinfo (advanced timezones)<td class=good>yes<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Gmon profiling<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Debugging features<td class=bad>no<td class=good>yes<td class=good>yes<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Various Linux extensions<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=half>partial<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Target architectures comparison (common)<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>i386<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>x86_64<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>ARM<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Aarch64 (64-bit)<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>MIPS<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>PowerPC<td class=good>yes<td class=good>yes<td class=good>yes<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>RISC-V (64-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class="section"><th colspan="9">Target architectures comparison (exotic)</th></tr>
+<tr><th>x86_64 x32 ABI (ILP32)<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>SuperH<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Microblaze<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Sparc<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Alpha<td class=bad>no<td class=good>yes<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>S/390 (32-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>S/390x (64-bit)<td class=bad>no<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>OpenRISC 1000 (or1k)<td class=good>yes<td class=bad>no<td class=bad>no<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Motorola 680x0 (m68k)<td class=bad>no<td class=bad>no<td class=good>yes<td class=unknown>?<td class=bad>no<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>MMU-less microcontrollers<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class="section"><th colspan="9">Target architectures comparison (embedded)</th></tr>
+<tr><th>AVR ATtiny<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>ESP32<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>PIC 8-bit<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Build environment comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Legacy-code-friendly headers<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Lightweight headers<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Usable without native toolchain<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Respect for C namespace<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Respect for POSIX namespace<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Security/hardening comparison<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Attention to corner cases<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Safe UTF-8 decoder<td class=good>yes<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Avoids superlinear big-O's<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Stack smashing protection<td class=good>yes<td class=good>yes<td class=bad>no<td class=unknown>?<td class=good>yes<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr><th>Heap corruption detection<td class=good>yes<td class=good>yes<td class=unkbadwn>unknown<td class=unknown>?<td class=unkbadwn>unknown<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>Maintainability<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>Last release date<td class=good title="4 months ago">v1.2.6 (Mar 2026)<td class=good title="less than a month ago">v2.44 (Jul 2026)<td class=bad title="14 years ago">v0.9.33.2 (May 2012)<td class=good title="less than a month ago">v1.0.59 (Aug 2026)<td class=bad title="16 years ago">v0.35 (Jul 2010)<td class=good title="4 months ago">android-17.0.0_r1 (Mar 2026)<td class=half title="6 months ago">v4.6.0 (Jan 2026)<td class=good title="less than a month ago">v1.8.12 (Aug 2026)
+<tr><th>Main contributors<td class=half title="Rich Felker, Szabolcs Nagy">2<td class=bad title="Ulrich Drepper">1<td class=good title="Eric Andersen, Austin Foxley, Mike Frysinger">3<td class=good title="Eric Andersen, Waldemar Brodkorb, Mike Frysinger">3<td class=bad title="Felix von Leitner">1<td class=good title="Christopher Ferris, Ryan Prichard, Jingwei Zhang">3<td class=good title="Jeff Johnston, Christopher Faylor, Corinna Vinschen">3<td class=bad title="Keith Packard">1
+<tr><th>Bootstrap issues<td class=good>no<td class=bad title="Depends on bison and gawk, which themselves depend on a pre-existing libc">chicken-egg<td class=half title="Host stdarg/cdefs stubs, va_list CFLAGS, and SysV hash-style required for gcc-14">hacks<td class=unknown>?<td class=half title="Requires compiler hacks to build">hacks<td class=unknown>?<td class=unknown>?<td class=unknown>?
+<tr class=section><th>License<th>musl<th>glibc<th>uclibc<th>uclibc-ng<th>dietlibc<th>bionic<th>newlib<th>picolibc
+<tr><th>License<td class=good>MIT<td class=good>LGPL 2.1+ w/exceptions<td class=half>LGPL 2.1<td class=half>LGPL 2.1<td class=bad>GPL 2<td class=good>BSD<td class=good>BSD<td class=good>BSD
+
+</table></div>
+
+<h2>Notes</h2>
+
+<h3>In general</h3>
+
+<p>For each comparison in the table, each library is marked in red,
+yellow, or green. Red or yellow indicates that the library fails to
+support a feature or satisfy an optimality condition that may be
+desirable to <i>some users</i>.
+
+<p>Values marked with <span class=unknown>?</span> have not yet been
+tested. Contributions welcome!</p>
+
+<p>Performance and bloat metrics are measured automatically via the
+<tt>libc-bench</tt> and <tt>libc-features</tt> tools. Feature rows
+with <span class=unknown>?</span> require manual verification or
+cross-compilation testing.</p>
+
+<h3>Tested versions</h3>
+
+<ul>
+<li>musl 1.1.5 (built from source)
+<li>glibc 2.19 (cross-compiled from source)
+<li>uClibc 0.9.33.2 (built from source)
+<li>uClibc-ng - not yet tested
+<li>dietlibc 0.32 (built from source)
+<li>Bionic - not yet tested
+<li>newlib - not yet tested
+<li>picolibc - not yet tested
+</ul>
+
+<h3>Bloat comparison (storage)</h3>
+
+<p>"Bloat" refers to overhead cost that does not contribute to the
+functioning of an application. Sizes are measured via
+<tt>size(1)</tt> on the static/shared library sets and on the smallest
+programs. The "Smallest static C program" is <tt>int main() {}</tt>;
+"Static hello" is <tt>printf("hello %d\n", argc)</tt>. Both are built
+statically with <tt>-Os</tt> and stripped, and their size row reports
+the <tt>size(1)</tt> text+data+bss total (raw file size would include
+ELF headers and alignment padding); the stripped file size is shown in
+the tooltip as <tt>fsize</tt>. dietlibc is linked the way its
+<tt>diet</tt> wrapper intends (<tt>-nostdlib</tt> plus its own
+<tt>start.o</tt>). uClibc here is built leaner than the original
+comparison, which used a locale-enabled Buildroot configuration.</p>
+
+<h3>Bloat comparison (memory)</h3>
+
+<p>Overhead is measured in dirty pages (Private_Dirty from
+<tt>/proc/$pid/smaps</tt>) for a program spinning in an infinite loop.
+Each probe spins on a fixed iteration count with no libc calls (the
+original <tt>int main() {}</tt> and <tt>printf</tt> hello), so the
+measurement reflects the libc's own footprint, not the probe's. The
+overhead binaries are built at the default <tt>-O2</tt>, unstripped;
+optimization level and stripping only change code size (clean pages) and
+non-alloc sections, so they do not affect dirty pages. Because dirty
+pages are quantized to 4k and one run carries ±1 page of ASLR
+noise, the reported value is the minimum over several runs.</p>
+
+<h3>Behavior on resource exhaustion</h3>
+
+<p>These compare robustness of interfaces under low resource conditions.
+Reporting failure is the theoretically optimal behavior (green). Each
+probe runs in a forked child of a dynamically-linked binary under memory
+exhaustion (<tt>RLIMIT_DATA</tt> 128 MB, malloc arena drained, address
+space filled with mmap); an abort or crash is recorded, not fatal.
+<b>Divergences from the original comparison</b> (measured vs 2009-era
+values, all version differences, not methodology): TLS — measured
+"reports failure" everywhere, original said glibc/uclibc abort and
+dietlibc n/a (dietlibc's loader has no TLS support at all: dlopen of a
+TLS module crashes even without exhaustion); pthread_cancel — uclibc
+"no failure" here (LINUXTHREADS_OLD has no libgcc_s cancel path),
+dietlibc "no failure" (orig n/a); regcomp — uclibc/glibc "reports
+failure" here vs "crashes" in 2009; fnmatch — uclibc "no failure" (orig
+unknown), glibc "reports failure" (orig) not reproduced in 2.19; printf
+— glibc "no failure" (orig "reports failure"; 2.19 has no such path, its
+wide-buffer malloc only aborts on <tt>%.100000f</tt>); strtol unchanged
+("no failure" everywhere).</p>
+
+<h3>Performance comparison</h3>
+
+<p>All performance figures are from the <tt>libc-bench</tt> suite.
+Times are in seconds by default (no unit suffix). Values under 1ms are
+shown in milliseconds (<tt>ms</tt>), values under 1µs are shown in
+microseconds (<tt>µs</tt>).</p>
+
+<h3>Features comparison</h3>
+
+<p>Feature rows are detected programmatically: runtime probes
+(<tt>libc-features</tt>, inside the empty-rootfs container) overlaid on
+host-side <tt>nm</tt>/<tt>file</tt>/filesystem analysis
+(<tt>features_sys.sh</tt>). The original comparison lists columns in the
+order musl / uClibc / dietlibc / glibc; this report orders them musl /
+glibc / uClibc / dietlibc. <b>Divergences from the original comparison</b>
+are honest measurements of the versions we build, not methodology:</p>
+
+<ul>
+ <li><b>C99 math library</b> — symbol presence for 25 C99 functions
+ (<tt>expm1</tt>, <tt>erf</tt>, <tt>j0</tt>, <tt>hypot</tt>, <tt>fma</tt>,
+ …) counted across <tt>libm.a</tt>/<tt>libc.a</tt>. musl is complete;
+ glibc 2.19 lacks <tt>fma</tt> and dietlibc lacks seven
+ (<tt>cbrt</tt>, <tt>tgamma</tt>, <tt>nextafter</tt>, <tt>fmax</tt>,
+ <tt>fmin</tt>, <tt>remquo</tt>, <tt>scalbn</tt>), both "partial";
+ uclibc 0.9.33.2 ships only <tt>expm1</tt>/<tt>copysign</tt>/<tt>scalbn</tt>,
+ honestly "no" though the original said "partial".</li>
+ <li><b>Conformant printf</b> — a 19-case score (width/flags, <tt>%e</tt>,
+ <tt>%g</tt>, hex float <tt>%a</tt>, positional, <tt>%zu</tt>,
+ <tt>%Lf</tt>, <tt>%*d</tt>). musl and glibc pass all; uclibc lacks
+ <tt>%a</tt> (partial, the original said "no"); dietlibc 0.32 fails
+ <tt>%e</tt>/<tt>%a</tt>/positional/<tt>%Lf</tt>, honestly "no" though
+ the original said "yes".</li>
+ <li><b>Thread priority</b> — a real <tt>SCHED_FIFO</tt> thread with
+ <tt>PTHREAD_EXPLICIT_SCHED</tt>. musl/glibc/uClibc fail create with
+ <tt>EPERM</tt> unprivileged (an honest attempt, so "yes"); dietlibc's
+ attr setters return <tt>ENOTSUP</tt>/<tt>EINVAL</tt>, so "no".</li>
+ <li><b>Wide character interfaces</b> — presence of the core wide API
+ (<tt>wcstombs</tt>, <tt>swprintf</tt>, <tt>fwide</tt>, <tt>wcstod</tt>,
+ …). dietlibc carries only five of eleven and lacks <tt>wcstombs</tt> and
+ <tt>swprintf</tt>, so "minimal" (the original agreed).</li>
+ <li><b>C11 threads</b> — detected by linking <tt>thrd_create</tt> against
+ the header's declaration; only musl ships <tt>&lt;threads.h&gt;</tt>.</li>
+ <li><b>C11 thread-local storage</b> — a forked child accesses a
+ <tt>_Thread_local</tt> variable; uclibc and dietlibc segfault (no working
+ TLS in these configs), musl and glibc pass. The original said uclibc
+ "yes".</li>
+ <li><b>POSIX process scheduling</b> — musl's <tt>sched_getscheduler</tt>
+ stubs <tt>ENOSYS</tt>; glibc/uClibc/dietlibc report <tt>SCHED_OTHER</tt>
+ and <tt>EPERM</tt> on real-time priority (kernel-correct). The original
+ called glibc/uClibc "incorrect" and dietlibc "no".</li>
+ <li><b>Zoneinfo</b> — a binary <tt>TZif</tt> file with a +1h offset is
+ written and read via <tt>TZ=:/path</tt>; musl and glibc honor it, uclibc
+ and dietlibc ignore it (dietlibc ignores even POSIX <tt>TZ</tt> strings).
+ The original said dietlibc "yes".</li>
+ <li><b>TCB shadow</b> — the container bakes <tt>/etc/tcb/itestuser/shadow</tt>;
+ only musl's <tt>getspnam</tt> reads it.</li>
+ <li><b>Iconv</b> — a probe counting <tt>iconv_open</tt> across nine
+ UTF-8 pairs (decode and encode; musl converts all six decodes but cannot
+ encode to CJK, dietlibc opens only ISO-8859-1/UTF-16). glibc runs
+ dynamically through the sysroot loader with <tt>GCONV_PATH</tt> (static
+ binaries cannot dlopen gconv) and opens all nine. The original said
+ uclibc "mainly UTFs" and dietlibc "no".</li>
+<li><b>Sun RPC</b> — checked against the shared <tt>libc.so.6</tt>
+dynamic symbols (glibc exports <tt>clnt_create</tt>); uclibc was built
+with <tt>__UCLIBC_HAS_RPC__</tt> undefined and dietlibc has no RPC, both
+honestly "no" though the original said "yes".</li>
+<li><b>Legacy 8-bit codepages / CJK</b> — require <tt>setlocale</tt> data;
+a locale-archive (en_US.UTF-8, de_DE.ISO-8859-1, ja_JP.EUC-JP,
+zh_CN.GB2312) is generated into the glibc container via its own
+<tt>localedef</tt>. uclibc has no locale support
+(<tt>__UCLIBC_HAS_LOCALE__</tt> undefined), so those rows are "no".</li>
+<li><b>GCC libstdc++ compatibility</b> — libstdc++-v3 is built per libc in
+a separate best-effort tree (gcc-final itself keeps
+<tt>--disable-libstdc++-v3</tt> so a libstdc++ failure never breaks the
+compiler). The row is a C++ probe compiled with the target <tt>g++</tt>,
+linked statically, and run inside the container: it throws an exception,
+uses <tt>iostream</tt>, and grows a <tt>vector</tt>. A libc where
+libstdc++ fails to build is "no"; one where it links but the probe
+crashes at runtime (uclibc 0.9.33.2 unwinding) is "broken". Both render
+red.</li>
+<li><b>Gmon profiling</b> — dietlibc carries no <tt>monstartup</tt>/
+<tt>_moncontrol</tt> symbols, so its row is honestly "no" though the
+original said "yes".</li>
+<li><b>Target architectures</b> — unlike the original, cells are
+measured, not taken from each project's documented port list. A cell is
+"yes" only when the libc cross-compiles for that architecture with our
+toolchain AND a hello program statically links against it (verifies crt
+objects, headers, libm, and the linker script — failures the libc build
+alone cannot catch). "partial" means the libc builds but a user program
+will not link; "no" means the libc itself fails to cross-compile; "?"
+means untested (no toolchain for that architecture, or the libc declares
+no upstream port so testing is meaningless). Running the binary (qemu)
+is out of scope. Mainstream architectures (i386, ARM, AArch64, MIPS,
+PowerPC, RISC-V) come first; exotic ones only where the libc claims a
+port; AVR ATtiny, ESP32, and PIC 8-bit apply to newlib/picolibc only.
+Results accumulate in <tt>results/&lt;libc&gt;_arch.csv</tt>, one line
+per architecture.</li>
+</ul>
+
+<h3>License</h3>
+
+<p>The choice of license affects the usability of a standard library
+implementation. GPL v2-only is the most restrictive, incompatible with
+GPL v3-only code. MIT or BSD are the most flexible.</p>
+
+<h3>Maintainability</h3>
+
+<p>Main contributors are counted as unique authors with at least 10% of
+current LOC (via <tt>git blame</tt> on the default branch, run by
+<tt>contributors.sh</tt> into <tt>results/&lt;libc&gt;_contrib.csv</tt>).
+Counts not yet generated fall back to hard-coded values. Last release
+dates (newest release per libc, not the tested version) are fetched from
+each project's release page by <tt>contributors.sh</tt>; color reflects
+age (up to 6 months green, up to 2 years yellow, older red). Bootstrap
+issues describe the challenges of building each libc without an existing C
+library.</p>
+
+<h3>References</h3>
+
+<ul>
+<li><b>musl</b>: <a href="https://musl.libc.org">musl.libc.org</a>
+  - MIT license. Clean, lightweight, standards-conforming libc.</li>
+<li><b>glibc</b>: <a href="https://www.gnu.org/software/libc/">gnu.org/software/libc</a>
+  - LGPL 2.1+ with exceptions. The GNU C Library, used by most Linux distributions.</li>
+<li><b>uClibc</b>: <a href="https://uclibc.org">uclibc.org</a>
+  - LGPL 2.1. Original lightweight libc for embedded systems.</li>
+<li><b>uClibc-ng</b>: <a href="https://uclibc-ng.org">uclibc-ng.org</a>
+  - LGPL 2.1. Actively maintained fork of uClibc with bug fixes and new ports.</li>
+<li><b>dietlibc</b>: <a href="http://www.fefe.de/dietlibc/">fefe.de/dietlibc</a>
+  - GPL 2. Minimalist libc focused on small static binaries.</li>
+<li><b>Bionic</b>: <a href="https://android.googlesource.com/platform/bionic/">android.googlesource.com/bionic</a>
+  - BSD. Android's C library, optimized for mobile/embedded Linux.</li>
+<li><b>newlib</b>: <a href="https://sourceware.org/newlib/">sourceware.org/newlib</a>
+  - BSD. Portable C library for embedded and RTOS systems.</li>
+<li><b>picolibc</b>: <a href="https://github.com/picolibc/picolibc">github.com/picolibc/picolibc</a>
+  - BSD. Small, configurable libc for deeply embedded systems (ARM Cortex-M etc.).</li>
+<li><b>Original comparison</b>: <a href="https://www.etalabs.net/compare_libcs.html">etalabs.net/compare_libcs.html</a>
+  - by Rich Felker (musl author)</li>
+<li><b>Source</b>: <a href="https://github.com/PepperDev/libc-bench">github.com/PepperDev/libc-bench</a>
+  - this report is generated from source by libc-bench</li>
+<li><b>Results</b>: <a href="http://pepperdev.github.io/compare_libcs.html">pepperdev.github.io/compare_libcs.html</a>
+  - pre-run results of libc-bench</li>
+</ul>
+
+
+</body></html>
